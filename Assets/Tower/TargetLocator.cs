@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TargetLocator : MonoBehaviour
@@ -22,29 +23,33 @@ public class TargetLocator : MonoBehaviour
     void FindClosesttarget()
     {
         Enemy[] enemies = FindObjectsOfType<Enemy>();
-        Transform closestTarget = null;
-        float maxDistance = Mathf.Infinity;
+        List<Enemy> enemiesInRange = new List<Enemy>();
 
         foreach (Enemy enemy in enemies)
         {
             float targetDistance = Vector3.Distance(transform.position, enemy.transform.position);
 
-            if (targetDistance < maxDistance)
+            if (targetDistance < Range)
             {
-                closestTarget = enemy.transform;
-                maxDistance = targetDistance;
+                enemiesInRange.Add(enemy);
             }
         }
 
-        Target = closestTarget;
+        if (enemiesInRange.Count != 0)
+        {
+            Target = enemiesInRange.Last().transform;
+        }
+        else
+        {
+            Target = null;
+        }
+        
     }
     private void AimWeapon()
     {
-        float targetDistance = Vector3.Distance(transform.position, Target.transform.position);
-
         Weapon.LookAt(Target);
 
-        if (targetDistance < Range)
+        if (Target != null)
         {
             Attack(true);
         }
