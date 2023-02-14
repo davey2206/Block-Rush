@@ -1077,7 +1077,7 @@ ParticleSystem:
           m_RotationOrder: 4
       cycleCount: 1
       repeatInterval: 0.01
-      probability: 0.9
+      probability: 1
   SizeModule:
     enabled: 1
     curve:
